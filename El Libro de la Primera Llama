@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>EL LIBRO DE LA PRIMERA LLAMA · La Forma del Silencio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=IM+Fell+English:ital@0;1&family=Courier+Prime:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --fondo: #0c0905;
+  --fondo2: #140f08;
+  --hueso: #e8dcc4;
+  --arena: #c8a870;
+  --oro: #c89040;
+  --dim: #6a5030;
+  --linea: #1e160a;
+  --gris: #8a7050;
+  --fe: #c87840;
+  --estrategia: #6a9a70;
+  --humanidad: #7878c0;
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html, body {
+  background: var(--fondo);
+  color: var(--hueso);
+  font-family: 'IM Fell English', serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 300 300' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.8;
+}
+
+.pantalla {
+  display: none;
+  min-height: 100vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 28px 80px;
+}
+
+.pantalla.activa {
+  display: flex;
+  animation: aparecer 0.9s ease forwards;
+}
+
+@keyframes aparecer {
+  from { opacity:0; transform:translateY(10px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+@keyframes pulso {
+  0%,100% { transform:scale(1); opacity:.8; }
+  50% { transform:scale(1.05); opacity:1; }
+}
+
+#portada { text-align:center; }
+
+.p-sello {
+  width:88px; height:88px;
+  margin:0 auto 2rem;
+  animation: pulso 4s ease-in-out infinite;
+}
+
+.p-eyebrow {
+  font-family:'Courier Prime',monospace;
+  font-size:.62rem;
+  letter-spacing:.42em;
+  color:var(--dim);
+  text-transform:uppercase;
+  margin-bottom:.8rem;
+}
+
+.p-titulo {
+  font-family:'Cinzel',serif;
+  font-size:clamp(2rem,8vw,4.5rem);
+  font-weight:600;
+  letter-spacing:.06em;
+  line-height:1.05;
+  color:var(--hueso);
+  margin-bottom:.4rem;
+}
+
+.p-sub {
+  font-style:italic;
+  font-size:1.05rem;
+  color:var(--arena);
+  letter-spacing:.06em;
+  margin-bottom:2.4rem;
+}
+
+.p-sep {
+  display:flex;
+  align-items:center;
+  gap:1rem;
+  max-width:360px;
+  margin:0 auto 2rem;
+}
+
+.p-sep-l {
+  flex:1; height:1px;
+  background:linear-gradient(to right,transparent,var(--dim),transparent);
+}
+
+.p-lineas {
+  display:flex;
+  gap:24px;
+  justify-content:center;
+  margin-bottom:2.4rem;
+}
+
+.p-linea {
+  display:flex;
+  align-items:center;
+  gap:7px;
+}
+
+.p-dot { width:6px; height:6px; border-radius:50%; }
+
+.p-linea-txt {
+  font-family:'Courier Prime',monospace;
+  font-size:.68rem;
+  letter-spacing:.12em;
+  color:var(--gris);
+  text-transform:uppercase;
+}
+
+.p-personajes {
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  max-width:360px;
+  margin:0 auto 2.4rem;
+  border-top:1px solid var(--linea);
+}
+
+.p-pers {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:10px 0;
+  border-bottom:1px solid var(--linea);
+}
+
+.p-pers-num {
+  font-family:'Cinzel',serif;
+  font-size:.6rem;
+  letter-spacing:.18em;
+  color:var(--dim);
+  width:22px;
+  flex-shrink:0;
+}
+
+.p-pers-nombre {
+  font-family:'Cinzel',serif;
+  font-size:.88rem;
+  color:var(--arena);
+  flex:1;
+  text-align:left;
+}
+
+.p-pers-desc {
+  font-size:.78rem;
+  font-style:italic;
+  color:var(--dim);
+}
+
+.btn-p {
+  background:transparent;
+  border:1px solid rgba(200,144,64,.45);
+  color:var(--arena);
+  font-family:'Cinzel',serif;
+  font-size:.72rem;
+  letter-spacing:.25em;
+  text-transform:uppercase;
+  padding:14px 48px;
+  cursor:pointer;
+  transition:all .4s;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.btn-p:hover { background:rgba(200,144,64,.08); border-color:var(--oro); color:var(--oro); }
+
+.btn-continuar {
+  display:block;
+  background:transparent;
+  border:1px solid rgba(200,144,64,.2);
+  color:rgba(200,144,64,.4);
+  font-family:'Courier Prime',monospace;
+  font-size:.6rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  padding:10px 28px;
+  cursor:pointer;
+  transition:all .4s;
+  margin-top:14px;
+}
+
+.btn-continuar:hover { border-color:rgba(200,144,64,.5); color:var(--arena); }
+
+.guardado-info {
+  font-family:'Courier Prime',monospace;
+  font-size:.55rem;
+  letter-spacing:.14em;
+  color:var(--dim);
+  margin-top:8px;
+  font-style:italic;
+}
+
+.pie {
+  margin-top:52px;
+  font-family:'Courier Prime',monospace;
+  font-size:.6rem;
+  letter-spacing:.2em;
+  color:#2a1e0a;
+}
+
+.pie a {
+  display:block;
+  color:rgba(200,144,64,.5);
+  text-decoration:none;
+  margin-top:6px;
+  transition:opacity .3s;
+  opacity:.8;
+}
+
+.pie a:hover { opacity:1; }
+
+#intro { text-align:center; }
+
+.ic-sello {
+  width:72px; height:72px;
+  margin:0 auto 1.8rem;
+  animation:pulso 3.5s ease-in-out infinite;
+}
+
+.ic-romano {
+  font-family:'Courier Prime',monospace;
+  font-size:.65rem;
+  letter-spacing:.42em;
+  color:var(--dim);
+  text-transform:uppercase;
+  margin-bottom:1rem;
+}
+
+.ic-nombre {
+  font-family:'Cinzel',serif;
+  font-size:clamp(2.2rem,9vw,4.5rem);
+  font-weight:600;
+  line-height:.95;
+  letter-spacing:.04em;
+  color:var(--hueso);
+  margin-bottom:.4rem;
+}
+
+.ic-epiteto {
+  font-style:italic;
+  font-size:1.05rem;
+  color:var(--arena);
+  margin-bottom:.3rem;
+}
+
+.ic-eje {
+  font-family:'Courier Prime',monospace;
+  font-size:.6rem;
+  letter-spacing:.15em;
+  color:var(--dim);
+  text-transform:uppercase;
+  margin-bottom:2.8rem;
+}
+
+.ic-desc {
+  font-size:clamp(.95rem,2.8vw,1.1rem);
+  line-height:2.05;
+  color:rgba(232,220,196,.65);
+  max-width:440px;
+  margin-bottom:2.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.ic-desc p {
+  margin: 0;
+}
+
+.hud {
+  position:fixed;
+  top:0; left:0; right:0;
+  background:rgba(12,9,5,.97);
+  border-bottom:1px solid var(--linea);
+  z-index:100;
+  padding:0 24px;
+  display:none;
+}
+
+.hud.visible { display:block; }
+
+.hud-top {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:11px 0 6px;
+}
+
+.hud-nombre {
+  font-family:'Cinzel',serif;
+  font-size:.65rem;
+  letter-spacing:.18em;
+  color:var(--gris);
+  text-transform:uppercase;
+}
+
+.hud-prog {
+  font-family:'Courier Prime',monospace;
+  font-size:.7rem;
+  color:var(--dim);
+}
+
+.hud-lineas {
+  display:flex;
+  gap:20px;
+  padding-bottom:9px;
+  align-items:center;
+}
+
+.hud-l { display:flex; align-items:center; gap:5px; }
+
+.hud-dot { width:5px; height:5px; border-radius:50%; }
+
+.hud-pct { font-family:'Courier Prime',monospace; font-size:.68rem; }
+
+.barra-prog {
+  position:fixed;
+  top:62px; left:0;
+  height:1px;
+  background:var(--oro);
+  opacity:.3;
+  transition:width .8s ease;
+  z-index:101;
+}
+
+#juego { padding-top:96px; justify-content:flex-start; }
+
+.juego-inner { max-width:520px; width:100%; }
+
+.esc-ey {
+  font-family:'Courier Prime',monospace;
+  font-size:.62rem;
+  letter-spacing:.28em;
+  color:var(--dim);
+  text-transform:uppercase;
+  margin-bottom:5px;
+}
+
+.esc-num {
+  font-family:'Courier Prime',monospace;
+  font-size:.68rem;
+  color:var(--dim);
+  letter-spacing:.12em;
+  margin-bottom:40px;
+  opacity:.6;
+}
+
+.micro {
+  font-family:'Courier Prime',monospace;
+  font-size:.82rem;
+  font-style:italic;
+  color:rgba(200,168,100,.75);
+  line-height:1.85;
+  margin-bottom:16px;
+  letter-spacing:.02em;
+}
+
+.esc-cuerpo {
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  margin-bottom: 52px;
+}
+
+.esc-cuerpo-parrafo {
+  font-size: clamp(1.05rem, 3vw, 1.25rem);
+  line-height: 2.15;
+  color: var(--hueso);
+  margin: 0;
+}
+
+.esc-cuerpo-parrafo:first-child {
+  font-weight: 500;
+  opacity: 0.95;
+  border-bottom: 1px solid var(--linea);
+  padding-bottom: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.esc-cuerpo-parrafo:last-child {
+  font-style: italic;
+  opacity: 0.8;
+  color: rgba(200, 168, 100, 0.8);
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--linea);
+}
+
+.opciones {
+  display:flex;
+  flex-direction:column;
+  border-top:1px solid var(--linea);
+}
+
+.opcion {
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+  padding:20px 0;
+  border-bottom:1px solid var(--linea);
+  cursor:pointer;
+  background:transparent;
+  border-left:none; border-right:none; border-top:none;
+  text-align:left;
+  color:var(--hueso);
+  font-family:'IM Fell English',serif;
+  width:100%;
+  transition:background .22s;
+  -webkit-tap-highlight-color:transparent;
+}
+
+.opcion:hover { background:rgba(200,144,64,.025); }
+
+.opcion:hover .op-txt { opacity:1; }
+
+.opcion:hover .op-dot { transform:scale(1.5); }
+
+.op-dot {
+  width:6px; height:6px;
+  border-radius:50%;
+  margin-top:8px;
+  flex-shrink:0;
+  transition:transform .22s;
+}
+
+.op-inner { flex:1; }
+
+.op-linea {
+  font-family:'Cinzel',serif;
+  font-size:.62rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  margin-bottom:5px;
+  opacity:1;
+}
+
+.op-txt {
+  font-size:.95rem;
+  line-height:1.8;
+  color:rgba(232,220,196,.85);
+  transition:opacity .22s;
+}
+
+.op-reflexion {
+  font-size:.82rem;
+  font-style:italic;
+  color:rgba(200,168,100,.7);
+  margin-top:6px;
+  line-height:1.6;
+}
+
+#cierre { text-align:center; }
+
+.cierre-completado {
+  font-family:'Courier Prime',monospace;
+  font-size:.6rem;
+  letter-spacing:.42em;
+  color:var(--dim);
+  text-transform:uppercase;
+  margin-bottom:1rem;
+}
+
+.cierre-nombre {
+  font-family:'Cinzel',serif;
+  font-size:clamp(2rem,8vw,3.8rem);
+  font-weight:600;
+  line-height:1;
+  color:var(--hueso);
+  margin-bottom:.4rem;
+}
+
+.cierre-sub {
+  font-family:'Courier Prime',monospace;
+  font-size:.6rem;
+  letter-spacing:.14em;
+  color:var(--dim);
+  text-transform:uppercase;
+  margin-bottom:2.4rem;
+}
+
+.cierre-lectura {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2.4rem;
+  max-width: 420px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cierre-lectura-p {
+  font-style: italic;
+  font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+  color: rgba(232, 220, 196, 0.6);
+  line-height: 2.1;
+  margin: 0;
+}
+
+.cierre-ritual {
+  padding:1rem 1.4rem;
+  border-left:2px solid var(--dim);
+  background:rgba(200,144,64,.03);
+  text-align:left;
+  max-width:380px;
+  margin:0 auto 2.4rem;
+}
+
+.cierre-ritual-lbl {
+  font-family:'Cinzel',serif;
+  font-size:.58rem;
+  letter-spacing:.22em;
+  color:var(--dim);
+  text-transform:uppercase;
+  margin-bottom:.4rem;
+}
+
+.cierre-ritual-txt {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.cierre-ritual-txt-p {
+  font-size: 0.9rem;
+  color: rgba(232, 220, 196, 0.55);
+  line-height: 1.75;
+  margin: 0;
+}
+
+.cierre-barras {
+  width:100%;
+  max-width:340px;
+  margin:0 auto 2.8rem;
+}
+
+.cb-fila { display:flex; align-items:center; gap:12px; margin-bottom:16px; }
+
+.cb-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+
+.cb-nom {
+  font-family:'Cinzel',serif;
+  font-size:.62rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  width:84px; flex-shrink:0;
+}
+
+.cb-barra { flex:1; height:1px; background:var(--linea); position:relative; }
+
+.cb-fill { position:absolute; left:0; top:0; height:100%; transition:width 1.2s ease; }
+
+.cb-pct { font-family:'Courier Prime',monospace; font-size:.68rem; width:34px; text-align:right; }
+
+.btn-sig {
+  background:transparent;
+  border:none;
+  font-family:'Cinzel',serif;
+  font-size:.72rem;
+  letter-spacing:.2em;
+  color:var(--arena);
+  cursor:pointer;
+  text-transform:uppercase;
+  transition:opacity .3s;
+  padding:0;
+}
+
+.btn-sig:hover { opacity:.5; }
+
+.export-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.btn-export {
+  background: transparent;
+  border: 1px solid rgba(200, 144, 64, .3);
+  color: rgba(200, 168, 100, .7);
+  font-family: 'Courier Prime', monospace;
+  font-size: .65rem;
+  letter-spacing: .2em;
+  padding: 10px 16px;
+  cursor: pointer;
+  transition: all .3s;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
+.btn-export:hover {
+  border-color: rgba(200, 144, 64, .7);
+  color: var(--arena);
+  background: rgba(200, 144, 64, .08);
+}
+
+.qr-modal {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.95);
+  z-index: 10000;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.qr-modal.visible {
+  display: flex;
+  animation: aparecer 0.5s ease forwards;
+}
+
+.qr-modal-content {
+  background: var(--fondo2);
+  border: 1px solid var(--linea);
+  padding: 2rem;
+  border-radius: 4px;
+  text-align: center;
+  max-width: 400px;
+}
+
+.qr-modal-title {
+  color: var(--arena);
+  font-family: 'Cinzel', serif;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  margin-top: 0;
+}
+
+.qr-modal img {
+  max-width: 300px;
+  margin: 1.5rem 0;
+  border: 1px solid var(--linea);
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.qr-modal p {
+  color: var(--gris);
+  font-family: 'Courier Prime', monospace;
+  font-size: .7rem;
+  margin: 1rem 0;
+  word-break: break-all;
+  line-height: 1.4;
+}
+
+.btn-close-qr {
+  background: transparent;
+  border: 1px solid rgba(200, 144, 64, .3);
+  color: rgba(200, 168, 100, .6);
+  padding: 10px 20px;
+  cursor: pointer;
+  font-family: 'Courier Prime', monospace;
+  font-size: .65rem;
+  transition: all .3s;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
+.btn-close-qr:hover {
+  border-color: rgba(200, 144, 64, .7);
+  color: var(--arena);
+}
+
+#resultado { text-align:center; }
+
+.rg-marca {
+  font-family:'Courier Prime',monospace;
+  font-size:.58rem;
+  letter-spacing:.42em;
+  color:var(--dim);
+  text-transform:uppercase;
+  margin-bottom:.8rem;
+}
+
+.rg-titulo {
+  font-family:'Cinzel',serif;
+  font-size:clamp(1.8rem,7vw,3.5rem);
+  font-weight:600;
+  line-height:1;
+  margin-bottom:.4rem;
+}
+
+.rg-dom {
+  font-style:italic;
+  font-size:.95rem;
+  color:var(--arena);
+  margin-bottom:3rem;
+}
+
+.rg-mapa {
+  width:100%;
+  max-width:440px;
+  margin:0 auto 2.8rem;
+}
+
+.rg-fila { display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+
+.rg-dot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+
+.rg-nombre {
+  font-family:'Cinzel',serif;
+  font-size:.65rem;
+  letter-spacing:.1em;
+  text-transform:uppercase;
+  width:80px; flex-shrink:0; text-align:left;
+}
+
+.rg-segs { flex:1; display:flex; height:2px; gap:1px; }
+
+.rg-seg { height:100%; transition:width 1.4s ease; }
+
+.rg-dom-c {
+  font-family:'Courier Prime',monospace;
+  font-size:.6rem;
+  letter-spacing:.06em;
+  width:72px; text-align:right;
+}
+
+.rg-divisor {
+  width:100%;
+  max-width:340px;
+  height:1px;
+  background:var(--linea);
+  margin:0 auto 2.4rem;
+}
+
+.rg-lec-lbl {
+  font-family:'Courier Prime',monospace;
+  font-size:.6rem;
+  letter-spacing:.28em;
+  color:var(--dim);
+  text-transform:uppercase;
+  margin-bottom:1rem;
+}
+
+.rg-lectura {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 2.8rem;
+  max-width: 440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rg-lectura-p {
+  font-style: italic;
+  font-size: clamp(0.95rem, 2.8vw, 1.1rem);
+  color: rgba(232, 220, 196, 0.55);
+  line-height: 2.1;
+  margin: 0;
+}
+
+.btn-reiniciar {
+  background:transparent;
+  border:none;
+  font-family:'Cinzel',serif;
+  font-size:.65rem;
+  letter-spacing:.2em;
+  color:var(--dim);
+  cursor:pointer;
+  text-transform:uppercase;
+  transition:color .3s;
+  padding:0;
+}
+
+.btn-reiniciar:hover { color:var(--arena); }
+
+#lang-btn {
+  position: fixed;
+  top: 14px;
+  right: 18px;
+  z-index: 10000;
+  background: transparent;
+  border: 1px solid rgba(200, 144, 64, .3);
+  color: rgba(200, 168, 100, .6);
+  font-family: 'Courier Prime', monospace;
+  font-size: .6rem;
+  letter-spacing: .2em;
+  padding: 5px 10px;
+  cursor: pointer;
+  transition: all .3s;
+  text-transform: uppercase;
+  border-radius: 2px;
+}
+
+#lang-btn:hover {
+  border-color: rgba(200, 144, 64, .7);
+  color: var(--arena);
+}
+
+#toast-guardado {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(200, 144, 64, .12);
+  border: 1px solid rgba(200, 144, 64, .25);
+  color: rgba(200, 168, 100, .7);
+  font-family: 'Courier Prime', monospace;
+  font-size: .55rem;
+  letter-spacing: .18em;
+  padding: 7px 14px;
+  z-index: 9000;
+  transition: opacity .5s;
+  pointer-events: none;
+  text-transform: uppercase;
+  opacity: 0;
+}
+
+#toast-guardado.visible {
+  opacity: 1;
+}
+</style>
+</head>
+<body>
+
+<div class="hud" id="hud">
+  <div class="hud-top">
+    <span class="hud-nombre" id="hud-nombre">—</span>
+    <span class="hud-prog" id="hud-prog">1 · 10</span>
+  </div>
+  <div class="hud-lineas">
+    <div class="hud-l">
+      <div class="hud-dot" style="background:var(--fe)"></div>
+      <span class="hud-pct" style="color:var(--fe)" id="pct-f">0%</span>
+    </div>
+    <div class="hud-l">
+      <div class="hud-dot" style="background:var(--estrategia)"></div>
+      <span class="hud-pct" style="color:var(--estrategia)" id="pct-e">0%</span>
+    </div>
+    <div class="hud-l">
+      <div class="hud-dot" style="background:var(--humanidad)"></div>
+      <span class="hud-pct" style="color:var(--humanidad)" id="pct-h">0%</span>
+    </div>
+    <span style="margin-left:auto;font-family:'Courier Prime',monospace;font-size:.62rem;color:var(--dim)" id="hud-num">cap. 1/11</span>
+  </div>
+</div>
+<div class="barra-prog" id="barra-prog"></div>
+
+<div id="portada" class="pantalla activa">
+  <div class="p-sello">
+    <svg viewBox="0 0 88 88" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="44" cy="44" r="40" stroke="#6a5030" stroke-width="0.6" opacity="0.5"/>
+      <circle cx="44" cy="44" r="32" stroke="#6a5030" stroke-width="0.4" opacity="0.3"/>
+      <line x1="44" y1="8" x2="44" y2="80" stroke="#c89040" stroke-width="0.6" opacity="0.3"/>
+      <line x1="8" y1="44" x2="80" y2="44" stroke="#c89040" stroke-width="0.6" opacity="0.3"/>
+      <line x1="16" y1="16" x2="72" y2="72" stroke="#6a5030" stroke-width="0.4" opacity="0.25"/>
+      <line x1="72" y1="16" x2="16" y2="72" stroke="#6a5030" stroke-width="0.4" opacity="0.25"/>
+      <circle cx="44" cy="44" r="6" stroke="#c89040" stroke-width="0.8" opacity="0.6"/>
+      <circle cx="44" cy="44" r="2" fill="#c89040" opacity="0.7"/>
+    </svg>
+  </div>
+
+  <h1 class="p-titulo" id="p-titulo1">El Libro de<br>la Primera Llama</h1>
+  <p class="p-eyebrow" id="p-eyebrow">La Forma del Silencio</p>
+  <p class="p-eyebrow" id="p-eyebrow2">Artefacto de Interfaz</p>
+
+  <div class="p-sep">
+    <div class="p-sep-l"></div>
+    <span style="color:var(--dim);opacity:.6;">✦</span>
+    <div class="p-sep-l"></div>
+  </div>
+
+  <div class="p-lineas">
+    <div class="p-linea">
+      <div class="p-dot" style="background:var(--fe)"></div>
+      <span class="p-linea-txt" id="txt-fe">Fe</span>
+    </div>
+    <div class="p-linea">
+      <div class="p-dot" style="background:var(--estrategia)"></div>
+      <span class="p-linea-txt" id="txt-est">Estrategia</span>
+    </div>
+    <div class="p-linea">
+      <div class="p-dot" style="background:var(--humanidad)"></div>
+      <span class="p-linea-txt" id="txt-hum">Humanidad</span>
+    </div>
+  </div>
+
+  <div class="p-personajes">
+    <div class="p-pers"><span class="p-pers-num">I</span><span class="p-pers-nombre">Noé</span></div>
+    <div class="p-pers"><span class="p-pers-num">II</span><span class="p-pers-nombre">José</span></div>
+    <div class="p-pers"><span class="p-pers-num">III</span><span class="p-pers-nombre">Moisés</span></div>
+    <div class="p-pers"><span class="p-pers-num">IV</span><span class="p-pers-nombre">Sansón</span></div>
+    <div class="p-pers"><span class="p-pers-num">V</span><span class="p-pers-nombre">Job</span></div>
+    <div class="p-pers"><span class="p-pers-num">VI</span><span class="p-pers-nombre">David</span></div>
+    <div class="p-pers"><span class="p-pers-num">VII</span><span class="p-pers-nombre">Judas</span></div>
+    <div class="p-pers"><span class="p-pers-num">VIII</span><span class="p-pers-nombre">María Magdalena</span></div>
+    <div class="p-pers"><span class="p-pers-num">IX</span><span class="p-pers-nombre">María madre</span></div>
+    <div class="p-pers"><span class="p-pers-num">X</span><span class="p-pers-nombre">Jesús</span></div>
+    <div class="p-pers"><span class="p-pers-num">XI</span><span class="p-pers-nombre">Dios</span></div>
+  </div>
+
+  <button class="btn-p" id="btn-abrir" onclick="comenzar()">ABRIR EL LIBRO</button>
+  <div id="bloque-guardado" style="display:none;text-align:center;margin-top:0">
+    <button class="btn-continuar" id="btn-continuar-guardado" onclick="continuarGuardado()">○ CONTINUAR DONDE LO DEJÉ</button>
+    <p class="guardado-info" id="info-guardado"></p>
+  </div>
+
+  <div class="pie">
+    <p style="margin: 0;">El Libro de la Primera Llama</p>
+    <a href="https://laformadelsilencio.my.canva.site/" target="_blank">laformadelsilencio.my.canva.site →</a>
+  </div>
+</div>
+
+<div id="intro" class="pantalla">
+  <div class="ic-sello" id="ic-sello"></div>
+  <p class="ic-romano" id="ic-romano">Capítulo I</p>
+  <h2 class="ic-nombre" id="ic-nombre">—</h2>
+  <p class="ic-epiteto" id="ic-epiteto">—</p>
+  <p class="ic-eje" id="ic-eje">—</p>
+  <div class="ic-desc" id="ic-desc"></div>
+  <button class="btn-p" onclick="iniciarCap()">ENTRAR</button>
+</div>
+
+<div id="juego" class="pantalla">
+  <div class="juego-inner">
+    <p class="esc-ey" id="esc-ey">—</p>
+    <p class="esc-num" id="esc-num">Escenario 1 de 10</p>
+    <p class="micro" id="esc-micro">—</p>
+    <div class="esc-cuerpo" id="esc-cuerpo"></div>
+    <div class="opciones" id="opciones"></div>
+  </div>
+</div>
+
+<div id="cierre" class="pantalla">
+  <p class="cierre-completado" id="cierre-lbl">Capítulo I · Completado</p>
+  <h2 class="cierre-nombre" id="cierre-nom">—</h2>
+  <p class="cierre-sub" id="cierre-sub">—</p>
+  <div class="cierre-lectura" id="cierre-lec"></div>
+  <div class="cierre-ritual">
+    <div class="cierre-ritual-lbl" id="ritual-lbl">Ritual de cierre</div>
+    <div class="cierre-ritual-txt" id="cierre-ritual"></div>
+  </div>
+  <div class="cierre-barras" id="cierre-barras"></div>
+  <button class="btn-sig" id="btn-sig">→</button>
+</div>
+
+<div id="resultado" class="pantalla">
+  <p class="rg-marca">El Libro de la Primera Llama · Mapa Completo</p>
+  <h2 class="rg-titulo" id="rg-titulo">La forma que construiste</h2>
+  <p class="rg-dom" id="rg-dom">—</p>
+  <div class="rg-mapa" id="rg-mapa"></div>
+  <div class="rg-divisor"></div>
+  <p class="rg-lec-lbl" id="rg-lec-lbl">El patrón a través de los once</p>
+  <div class="rg-lectura" id="rg-lectura"></div>
+  <button class="btn-reiniciar" onclick="reiniciar()">○ volver al inicio</button>
+
+  <div style="margin-top:60px;text-align:center;">
+    <p style="font-family:'Cinzel',serif;font-size:1rem;letter-spacing:.22em;color:var(--arena);opacity:.85;margin-bottom:.6rem;">#LaFormadelSilencio</p>
+  </div>
+</div>
+
+<div id="qr-modal" class="qr-modal">
+  <div class="qr-modal-content">
+    <h2 class="qr-modal-title" id="qr-title">Comparte Tu Forma</h2>
+    <img id="qr-img" alt="QR Code" />
+    <p id="qr-url"></p>
+    <button class="btn-close-qr" onclick="cerrarQRModal()">Cerrar</button>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+
+<script>
+// DATOS Y LÓGICA
+const TRANSLATIONS = {es:{ui:{eyebrow:"La Forma del Silencio",eyebrow2:"Artefacto de Interfaz",titulo1:"El Libro de",titulo2:"la Primera Llama",sub:"Once figuras · Ciento diez decisiones",abrir:"ABRIR EL LIBRO",continuar:"○ CONTINUAR DONDE LO DEJÉ",capitulo:"Capítulo",entrar:"ENTRAR",escenario:"Escenario",de:"de",completado:"Completado",ritual_lbl:"Ritual de cierre",siguiente_pre:"Siguiente: ",siguiente_suf:" →",ver_mapa:"Ver el mapa →",ver_mapa_completo:"Ver el mapa completo →",mapa_marca:"El Libro de la Primera Llama · Mapa Completo",mapa_titulo:"La forma que construiste",patron:"Patrón dominante: ",patron_lbl:"El patrón a través de los once",volver:"○ volver al inicio",guardado:"guardado",exportar:"📥 Descargar resultado",compartir_qr:"🔗 Compartir con QR",fe:"Fe",estrategia:"Estrategia",humanidad:"Humanidad",comparte_tu_forma:"Comparte Tu Forma"},caps:[{id:0,romano:"I",nombre:"Noé",epiteto:"El constructor del arca",eje:"de la obediencia al testimonio",desc:["Eres Noé. El mundo que conoces va a ser destruido — o eso te han dicho.","No hay precedente. No hay prueba. Solo una instrucción que desafía toda lógica humana: construye un barco en tierra seca, suficientemente grande para todo lo que vive.","Tu familia te mira. Tus vecinos también."],lectura:"Noé construyó algo que nadie entendía para un evento que nadie había visto. La fe aquí no es credulidad — es la disposición de actuar sobre algo que el sistema disponible no puede verificar. Lo que revelan estas decisiones no es si Noé tenía razón. Es qué hace alguien cuando su convicción supera la comprensión de todos los que lo rodean.",ritual:"Piensa en algo que construyes o sostienes que nadie más ve todavía. Nómbralo en voz alta, aunque sea solo para ti."},{id:1,romano:"II",nombre:"José",epiteto:"El vendido que sostuvo a los que lo vendieron",eje:"de la traición a la provisión",desc:["Eres José, el undécimo de doce hijos. Tu padre te ama más visiblemente que a los otros — y eso tiene consecuencias.","Tus hermanos te venden como esclavo a una caravana que pasa. Tienes diecisiete años.","Lo que viene después es una de las historias más extraordinarias de transformación de daño en propósito."],lectura:"José no perdonó a sus hermanos porque fuera noble. Los perdonó porque entendió que el daño que sufrió tenía una función que ninguno de los actores podía ver desde adentro. Eso no borra el dolor — lo recontextualiza. Lo que revelan estas decisiones es si puedes sostener coherencia cuando el sistema que te rodea ha colapsado completamente.",ritual:"Piensa en algo que te hicieron que resultó ser parte de un camino que no podías ver entonces. No para justificarlo — para verlo."},{id:2,romano:"III",nombre:"Moisés",epiteto:"El libertador que no entró a la tierra prometida",eje:"de la zarza ardiente a las aguas de Meriba",desc:["Eres Moisés. Príncipe egipcio que mató a un capataz, huyó al desierto, y pasó cuarenta años cuidando ovejas antes de que una zarza ardiente cambiara todo.","Tu historia es sobre el liderazgo de lo imposible: liberar a un pueblo que no sabe que puede ser libre, y pagar el precio de ser el puente que otros cruzan sin llegar tú al otro lado."],lectura:"Moisés construyó el puente más largo del Antiguo Testamento. Cuarenta años en el desierto, 600.000 personas, el sistema más adverso imaginable. Y no llegó. Lo que revelan estas decisiones no es si Moisés fue un buen líder — es qué hace alguien cuando su propósito lo supera a él mismo.",ritual:"Piensa en algo que estás construyendo para que otros lo crucen. Reconoce que no necesitas cruzarlo tú para que valga."},{id:3,romano:"IV",nombre:"Sansón",epiteto:"La fuerza sin dirección",eje:"del don sin propósito al propósito en el colapso",desc:["Eres Sansón. Nacer con una fuerza sobrenatural no es una garantía — es una responsabilidad que puedes ignorar.","Tu historia es la del don que se gasta en impulsos personales hasta que el colapso produce lo que el don nunca produjo cuando estaba intacto."],lectura:"Sansón es el único héroe bíblico cuyo mayor acto ocurre después de su mayor derrota. La fuerza que tuvo durante décadas no cambió el sistema de opresión. La debilidad que eligió —dejarse capturar, perder sus ojos— fue el camino hacia el único acto que importó. Lo que revelan estas decisiones es qué se hace con lo que se tiene antes de que desaparezca.",ritual:"Identifica un don o capacidad que tengas. Pregúntate honestamente si lo estás usando en la dirección que le corresponde."},{id:4,romano:"V",nombre:"Job",epiteto:"El sistema que colapsa sin razón aparente",eje:"de la prosperidad al polvo y del polvo a la pregunta",desc:["Eres Job. Hombre íntegro, próspero, con familia y propósito. En un período muy corto, pierdes todo: bienes, hijos, salud.","Sin razón visible. Sin causa en tu comportamiento. Tus amigos vienen a explicarte por qué mereces lo que te pasa. Todos tienen razón aparente. Todos están equivocados."],lectura:"Job es el artefacto más honesto del canon bíblico sobre el sufrimiento sin causa aparente. Sus amigos representan el sistema de explicación que busca culpa donde solo hay misterio. La respuesta que recibe al final no explica nada — muestra la escala. Lo que revelan estas decisiones es qué hace la coherencia cuando el sistema que la sostenía colapsa.",ritual:"Piensa en algo que perdiste sin haberlo causado. No para explicarlo. Solo para nombrarlo con su nombre real."},{id:5,romano:"VI",nombre:"David",epiteto:"El pastor, el rey, el poeta y el hombre",eje:"de la honda al trono y del trono al arrepentimiento",desc:["Eres David. El más humano de todos los personajes del Antiguo Testamento. Pastor, poeta, guerrero, asesino, adúltero, padre, rey.","Ninguna figura bíblica muestra con más claridad que la misma persona puede alcanzar lo más alto y caer en lo más bajo. Y que ambas cosas son parte del mismo ser humano."],lectura:"David es el \"varón conforme al corazón de Dios\" que comete adulterio y homicidio. Esa contradicción no es hipocresía — es la descripción más honesta de lo humano. Lo que revelan estas decisiones es qué hace alguien con el poder total, y qué hace alguien con la culpa total.",ritual:"Piensa en la contradicción más grande que coexiste en ti. No para resolverla. Para reconocer que ambas partes son reales."},{id:6,romano:"VII",nombre:"Judas",epiteto:"El umbral cruzado sin retorno",eje:"de la discrepancia a la traición y de la traición al abismo",desc:["Eres Judas Iscariote. Uno de los doce. Tesorero del grupo. Testigo de todo lo que Jesús hizo durante tres años.","No eres el mal puro de las representaciones simplificadas — eres alguien que tenía razones, que cruzó un umbral, y que descubrió que no había retorno."],lectura:"Judas es el personaje más incomprendido del Nuevo Testamento. Treinta monedas de plata son un precio demasiado bajo para la traición si el motivo es el dinero. Hay algo más complejo en el texto: la discrepancia, la decepción, quizás la expectativa de que Jesús se revelaría con poder. Lo que revelan estas decisiones es qué hace alguien cuando el umbral ya fue cruzado.",ritual:"Piensa en una decisión que tomaste y que no puedes deshacer. No para torturarte. Para reconocer que la decisión es real y que vivir con lo irreversible también es una habilidad."},{id:7,romano:"VIII",nombre:"María Magdalena",epiteto:"La testigo cuya historia fue reescrita",eje:"de la curación a la primera testigo a la historia que otros contaron",desc:["Eres María Magdalena. El texto dice que de ti salieron siete demonios — lo que eso significa exactamente no se sabe.","Lo que sí se sabe: eras una de las que seguían a Jesús y lo sostenían con tus propios recursos. Estabas al pie de la cruz cuando los discípulos huyeron. Fuiste la primera en llegar al sepulcro."],lectura:"María Magdalena cargó algo que ninguno de los doce cargó: ser la primera testigo de lo más importante y no ser creída. La tradición la convirtió en penitente, en prostituta, en amante — ninguno de esos roles está en los textos. Lo que revelan estas decisiones es qué hace alguien cuya historia le es arrebatada y qué hace con la verdad que nadie más quiere.",ritual:"Piensa en algo que sabes con certeza que no te han creído o que fue interpretado de otra forma. Nómbralo para ti mismo exactamente como fue."},{id:8,romano:"IX",nombre:"María madre",epiteto:"El fiat y el sostén de lo que supera la comprensión",eje:"de la anunciación al pie de la cruz",desc:["Eres María de Nazaret. Una joven prometida en matrimonio en un territorio ocupado. Recibes una noticia que podría costarte la vida social, el matrimonio y quizás la física.","Tu respuesta es la frase más radical de consentimiento del canon: \"Hágase en mí según tu palabra.\" Luego cargas durante treinta y tres años algo que supera completamente tu comprensión."],lectura:"María es la figura del sostén silencioso de lo que no se puede controlar. No entiende a su hijo. Lo pierde en Jerusalén. Lo ve hacer cosas que la desconciertan. Y está al pie de la cruz. Lo que revelan estas decisiones es qué hace alguien cuando dijo sí a algo cuyas consecuencias no podía imaginar.",ritual:"Piensa en algo a lo que dijiste sí sin saber completamente adónde llevaba. Reconoce ese acto de confianza."},{id:9,romano:"X",nombre:"Jesús",epiteto:"El constructor de puentes que no vio el otro lado",eje:"del desierto a la cruz y de la cruz al legado",desc:["Eres Jesús de Nazaret. No como objeto de culto sino como sujeto de decisión. Un hombre que tenía treinta años cuando comenzó, que duró tres años, y que murió a los treinta y tres.","Que tomó decisiones en condiciones de presión extrema. Que fue tentado, que tuvo miedo, que se preguntó si había otra forma. Y que construyó algo que no vio completo."],lectura:"Jesús es el constructor de puentes más completo del ecosistema. No vio el resultado de lo que construyó. No sabía exactamente qué produciría. Tenía miedo en Getsemaní. Y actuó de todas formas. Lo que revelan estas decisiones no es la divinidad de Jesús — es la humanidad radical de alguien que actuó desde el amor sin garantía de resultado.",ritual:"Nombra algo que estás construyendo para que otros lo crucen, sabiendo que quizás no lo verás terminado. Nómbralo con su nombre."},{id:10,romano:"XI",nombre:"Dios",epiteto:"El que sostiene sin ser visto",eje:"de la creación al silencio y del silencio a la presencia",desc:["No eres un personaje en el sentido ordinario. Eres la pregunta que organiza todas las demás.","El relato bíblico te atribuye creación, silencio, intervención, abandono aparente, pacto, ira, ternura, distancia. No eres pensado desde afuera sino desde adentro de la experiencia humana."],lectura:"Dios en el relato bíblico no es uniforme. Hay ira y ternura, presencia y silencio, pacto y ruptura. Lo que revelan estas decisiones es cómo alguien piensa sobre la relación entre poder absoluto y amor, entre propósito y libertad, entre sostener y soltar. No es una pregunta teológica abstracta — es la pregunta más personal de todas.",ritual:"Piensa en alguien o algo que sostienes sin que lo sepa. Sin que puedas intervenir directamente. Nómbralo."}],lecturas:{f:"A lo largo de los once, la Fe fue el principio dominante. La disposición de actuar sobre algo que el sistema disponible no puede verificar, de confiar cuando la comprensión no alcanza, de sostenerse cuando el propósito supera la persona que lo porta. Lo que revelan estas decisiones es alguien que puede moverse sin garantías. Eso también tiene un costo: la fe sin estrategia puede producir confianza donde se requiere discernimiento. El desafío es saber cuándo la fe es la respuesta correcta y cuándo es el escape de una pregunta difícil.",e:"A lo largo de los once, la Estrategia fue el principio dominante. La inteligencia táctica, el cálculo de consecuencias, la arquitectura del movimiento antes que el impulso. Lo que revelan estas decisiones es alguien que piensa antes de actuar y que entiende sistemas. Eso también tiene un costo: la estrategia sin humanidad puede producir eficiencia donde se requiere presencia. El desafío es recordar que las personas no son variables en un sistema.",h:"A lo largo de los once, la Humanidad fue el principio dominante. El vínculo, la compasión, el reconocimiento de la condición compartida. Lo que revelan estas decisiones es alguien que ve personas donde otros ven problemas, que puede quedarse en el dolor sin necesitar resolverlo, que perdona aunque el cálculo no lo justifique. Eso también tiene un costo: la humanidad sin estrategia puede producir generosidad donde se requiere discernimiento sobre a quién y cómo. El desafío es no confundir la compasión con la permisividad."}},en:{ui:{eyebrow:"The Shape of Silence",eyebrow2:"Interface Artifact",titulo1:"The Book of",titulo2:"the First Flame",sub:"Eleven figures · One hundred ten decisions",abrir:"OPEN THE BOOK",continuar:"○ CONTINUE WHERE I LEFT OFF",capitulo:"Chapter",entrar:"ENTER",escenario:"Scenario",de:"of",completado:"Completed",ritual_lbl:"Closing ritual",siguiente_pre:"Next: ",siguiente_suf:" →",ver_mapa:"View the map →",ver_mapa_completo:"View the full map →",mapa_marca:"The Book of the First Flame · Full Map",mapa_titulo:"The shape you built",patron:"Dominant pattern: ",patron_lbl:"The pattern across the eleven",volver:"○ return to start",guardado:"saved",exportar:"📥 Download result",compartir_qr:"🔗 Share with QR",fe:"Faith",estrategia:"Strategy",humanidad:"Humanity",comparte_tu_forma:"Share Your Shape"},caps:[{id:0,romano:"I",nombre:"Noah",epiteto:"The builder of the ark",eje:"from obedience to testimony",desc:["You are Noah. The world you know is going to be destroyed — or so you have been told.","There is no precedent. There is no proof. Only an instruction that defies all human logic: build a boat on dry land, large enough for everything that lives.","Your family watches you. Your neighbors do too."],lectura:"Noah built something that nobody understood for an event that nobody had ever seen. Faith here is not credulity — it is the willingness to act on something that the available system cannot verify. What these decisions reveal is not whether Noah was right. It is what someone does when their conviction exceeds the understanding of everyone around them.",ritual:"Think of something you are building or sustaining that nobody else sees yet. Name it out loud, even if only to yourself."},{id:1,romano:"II",nombre:"Joseph",epiteto:"The sold one who sustained those who sold him",eje:"from betrayal to provision",desc:["You are Joseph, the eleventh of twelve sons. Your father loves you more visibly than the others — and that has consequences.","Your brothers sell you as a slave to a passing caravan. You are seventeen years old.","What comes next is one of the most extraordinary stories of transformation of harm into purpose."],lectura:"Joseph did not forgive his brothers because it was noble. He forgave them because he understood that the harm he suffered had a function that none of the actors could see from within. That does not erase the pain — it recontextualizes it. What these decisions reveal is whether you can sustain coherence when the system around you has completely collapsed.",ritual:"Think of something that was done to you that turned out to be part of a path you could not see then. Not to justify it — to see it."},{id:2,romano:"III",nombre:"Moses",epiteto:"The liberator who never entered the promised land",eje:"from the burning bush to the waters of Meribah",desc:["You are Moses. An Egyptian prince who killed an overseer, fled to the desert, and spent forty years tending sheep before a burning bush changed everything.","Your story is about the leadership of the impossible: to free a people who do not know they can be free, and to pay the price of being*
+
